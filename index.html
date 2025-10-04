@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCS Gen Ai Procurement Quotation</title>
+    <style>
+        :root {
+            /* Updated Color Palette */
+            --primary: #ff9900;       /* Dark Blue */
+            --secondary: #b31804;    /* Blue */
+            --accent: #000000;       /* Black */
+            --light: #FFFFFF;         /* White */
+            --dark: #000000;         /* Black */
+            
+            /* Complementary Colors */
+            --complement-blue: #FF9933;  /* Orange (complement to blue) */
+            --complement-dark: #66CCFF;  /* Light Blue (complement to dark blue) */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--accent);
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .form-section, .quotation-section, .confirmation-section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+        
+        .checkbox-group {
+            margin-top: 10px;
+            background-color: rgba(0, 51, 102, 0.05);
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .checkbox-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input {
+            width: auto;
+            margin-right: 10px;
+            accent-color: var(--secondary);
+        }
+        
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        button:hover {
+            background-color: #0055AA;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .btn-generate {
+            background-color: var(--primary);
+        }
+        
+        .btn-generate:hover {
+            background-color: #002244;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(0, 51, 102, 0.05);
+        }
+        
+        .total-row {
+            font-weight: bold;
+            background-color: rgba(0, 102, 204, 0.2) !important;
+            color: var(--dark);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .receipt-preview {
+            border: 2px solid var(--primary);
+            padding: 25px;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .company-info {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 20px;
+        }
+        
+        .receipt-title {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--secondary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .client-info {
+            margin-bottom: 30px;
+            background-color: rgba(0, 102, 204, 0.1);
+            padding: 20px;
+            border-radius: 6px;
+        }
+        
+        .receipt-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            border-top: 1px dashed var(--primary);
+            padding-top: 20px;
+        }
+
+        .receipt-qr-code {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .qr-caption {
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid var(--secondary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .confirmation-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .event-details-heading {
+            margin-top: 30px;
+            color: var(--primary);
+        }
+
+        /* Modal styles */
+        .print-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .print-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .print-modal-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .print-modal-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .print-modal-actions button:first-child {
+            background: var(--primary);
+            color: white;
+        }
+
+        .print-modal-actions button:last-child {
+            background: #ccc;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+            
+            body {
+                background-color: white;
+            }
+            
+            .container {
+                padding: 0;
+            }
+            
+            .form-section, .quotation-section {
+                box-shadow: none;
+                padding: 0;
+                border: none;
+            }
+            
+            .receipt-preview {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .print-modal {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <svg width="200" height="60" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,60 Q150,20 250,60 L250,80 Q150,120 50,80 Z" fill="#003366"/>
+                <path d="M130,40 L150,20 L170,40 L160,50 L140,45 Z" fill="#0066CC"/>
+                <text x="150" y="30" font-family="Arial" font-weight="bold" font-size="24" text-anchor="middle" fill="#FFFFFF">BCS Gen Ai Procurement Quotation</text>
+                <text x="150" y="90" font-family="Arial" font-size="14" text-anchor="middle" fill="#FFFFFF">Procurement Quotation</text>
+            </svg>
+            <p>Complete BCS Gen Ai Procurement Quotations across Kenya</p>
+        </header>
+        
+        <section class="form-section">
+            <h2>Client Information</h2>
+            <form id="clientForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientName">Full Name</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company/Organization</label>
+                        <input type="text" id="company">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                </div>
+                
+                <h2 class="event-details-heading">Event Details</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventType">Event Type</label>
+                        <select id="eventType" required>
+                            <option value="">-- Select Event Type --</option>
+                            <option value="corporate">Corporate/Brand Promotion</option>
+                            <option value="political">Political Rally</option>
+                            <option value="music">Music Concert</option>
+                            <option value="religious">Religious Event</option>
+                            <option value="community">Community Awareness</option>
+                            <option value="product">Product Launch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="province">Select Province</label>
+                        <select id="province" required>
+                            <option value="">-- Select Province --</option>
+                            <option value="nairobi">Nairobi Province</option>
+                            <option value="mombasa">Mombasa Province</option>
+                            <option value="kisumu">Kisumu Province</option>
+                            <option value="nakuru">Nakuru Province</option>
+                            <option value="eldoret">Eldoret Province</option>
+                            <option value="western">Western Province</option>
+                            <option value="central">Central Province</option>
+                            <option value="eastern">Eastern Province</option>
+                            <option value="northeastern">North Eastern Province</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="venue">Venue</label>
+                        <select id="venue" required>
+                            <option value="">-- Select Venue --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate">Event Date</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="duration">Duration (Days)</label>
+                        <input type="number" id="duration" min="1" max="7" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="attendees">Expected Attendees</label>
+                        <select id="attendees">
+                            <option value="small">Small (1-500 people)</option>
+                            <option value="medium" selected>Medium (500-2,000 people)</option>
+                            <option value="large">Large (2,000-5,000 people)</option>
+                            <option value="xlarge">Extra Large (5,000+ people)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Services</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="photography" value="photography">
+                            <label for="photography">Photography/Videography (KES 50,000/day)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mc" value="mc">
+                            <label for="mc">MC Services (KES 30,000/day)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="security" value="security">
+                            <label for="security">Security (KES 20,000/day)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="permits" value="permits">
+                            <label for="permits">Permits (KES 15,000)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tents" value="tents">
+                            <label for="tents">Tents & Chairs (KES 80,000)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="catering" value="catering">
+                            <label for="catering">Catering Services (KES 150,000)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="transport" value="transport">
+                            <label for="transport">Transport Logistics (KES 120,000)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="branding" value="branding">
+                            <label for="branding">Custom Branding (KES 45,000)</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specialRequests">Special Requests</label>
+                    <textarea id="specialRequests" rows="4"></textarea>
+                </div>
+                
+                <button type="button" id="generateQuoteBtn" class="btn-generate">Generate Quotation</button>
+            </form>
+        </section>
+        
+        <section class="quotation-section hidden" id="quotationSection">
+            <h2>Your BCS Gen Ai Procurement Quotation</h2>
+            <div id="quotationDetails"></div>
+            <button type="button" id="confirmBookingBtn">Confirm Booking</button>
+            <button type="button" id="editQuoteBtn" class="no-print">Edit Quotation</button>
+        </section>
+        
+        <section class="confirmation-section hidden" id="confirmationSection">
+            <h2>Booking Confirmation</h2>
+            <div class="receipt-preview" id="receiptPreview">
+                <div class="company-info">
+                    <h2>BCS Gen Ai Procurement Quotation</h2>
+                    <p>P.O. Box 339-30500, Lodwar Turkana</p>
+                    <p>Phone: +254 719474723 | Email: eipacsms672@gmail.com</p>
+                </div>
+                
+                <h3 class="receipt-title">Procurement Quotation</h3>
+                
+                <div class="client-info">
+                    <p><strong>Client Name:</strong> <span id="receiptClientName"></span></p>
+                    <p><strong>Company:</strong> <span id="receiptCompany"></span></p>
+                    <p><strong>Email:</strong> <span id="receiptEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="receiptPhone"></span></p>
+                </div>
+                
+                <div id="receiptEventDetails"></div>
+                
+                <table id="receiptItems">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th>Amount (KES)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receiptItemsBody"></tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="2">TOTAL</td>
+                            <td id="receiptTotal">0.00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Deposit Required (50%)</td>
+                            <td id="receiptDeposit">0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+                <div class="receipt-footer">
+                    <p>Thank you for choosing BCS Gen Ai Procurement Quotation</p>
+                    <p>Payment due 7 days before event. Cancellation within 14 days forfeits deposit.</p>
+                    <div id="receiptQrCode" class="receipt-qr-code"></div>
+                    <p class="qr-caption">Scan to verify your receipt online</p>
+                </div>
+            </div>
+            
+            <div class="confirmation-actions">
+                <button type="button" id="printReceiptBtn">Print Receipt</button>
+                <button type="button" id="downloadPdfBtn">Download PDF</button>
+                <button type="button" id="newBookingBtn" class="no-print">New Booking</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    
+    <script>
+        // Initialize EmailJS (replace with your actual User ID)
+        emailjs.init('YOUR_EMAILJS_USER_ID');
+
+        // Pricing data with event type multipliers
+        const eventTypeMultipliers = {
+            corporate: { name: "Corporate/Brand Promotion", multiplier: 1.2 },
+            political: { name: "Political Rally", multiplier: 1.5 },
+            music: { name: "Music Concert", multiplier: 1.8 },
+            religious: { name: "Religious Event", multiplier: 1.1 },
+            community: { name: "Community Awareness", multiplier: 1.0 },
+            product: { name: "Product Launch", multiplier: 1.3 }
+        };
+
+        const attendeeMultipliers = {
+            small: 0.8,
+            medium: 1.0,
+            large: 1.3,
+            xlarge: 1.6
+        };
+
+        const provinceData = {
+            nairobi: {
+                name: "Nairobi Province",
+                venues: [
+                    { name: "KICC", basePrice: 3000000 },
+                    { name: "Kenyatta International Convention Centre", basePrice: 2500000 },
+                    { name: "Carnivore Grounds", basePrice: 1800000 }
+                ],
+                basePrice: 1500000,
+                staff: 10,
+                daysIncluded: 3
+            },
+            mombasa: {
+                name: "Mombasa Province",
+                venues: [
+                    { name: "Wild Waters", basePrice: 2500000 },
+                    { name: "Serena Beach", basePrice: 2200000 },
+                    { name: "Pirates Beach", basePrice: 1200000 }
+                ],
+                basePrice: 1200000,
+                staff: 8,
+                daysIncluded: 3
+            },
+            kisumu: {
+                name: "Kisumu Province",
+                venues: [
+                    { name: "Kisumu Impala Grounds", basePrice: 1800000 },
+                    { name: "Jomo Kenyatta Sports Ground", basePrice: 1200000 }
+                ],
+                basePrice: 900000,
+                staff: 6,
+                daysIncluded: 3
+            },
+            nakuru: {
+                name: "Nakuru Province",
+                venues: [
+                    { name: "Afraha Stadium", basePrice: 1500000 },
+                    { name: "Nakuru Athletics Club", basePrice: 1000000 }
+                ],
+                basePrice: 750000,
+                staff: 5,
+                daysIncluded: 2
+            },
+            eldoret: {
+                name: "Eldoret Province",
+                venues: [
+                    { name: "Eldoret Sports Club", basePrice: 1400000 },
+                    { name: "64 Stadium", basePrice: 900000 }
+                ],
+                basePrice: 700000,
+                staff: 5,
+                daysIncluded: 2
+            },
+            western: {
+                name: "Western Province",
+                venues: [
+                    { name: "Bukhungu Stadium", basePrice: 1300000 },
+                    { name: "Kakamega Golf Club", basePrice: 800000 }
+                ],
+                basePrice: 650000,
+                staff: 4,
+                daysIncluded: 2
+            },
+            central: {
+                name: "Central Province",
+                venues: [
+                    { name: "Nyeri Sports Club", basePrice: 1200000 },
+                    { name: "Sagana Rapids Camp", basePrice: 750000 }
+                ],
+                basePrice: 600000,
+                staff: 4,
+                daysIncluded: 2
+            },
+            eastern: {
+                name: "Eastern Province",
+                venues: [
+                    { name: "Machakos People's Park", basePrice: 1100000 },
+                    { name: "Embu Stadium", basePrice: 700000 }
+                ],
+                basePrice: 550000,
+                staff: 4,
+                daysIncluded: 2
+            },
+            northeastern: {
+                name: "North Eastern Province",
+                venues: [
+                    { name: "Garissa Recreation Center", basePrice: 900000 },
+                    { name: "Wajir Stadium", basePrice: 500000 }
+                ],
+                basePrice: 450000,
+                staff: 3,
+                daysIncluded: 1
+            }
+        };
+
+        const additionalServices = {
+            photography: { name: "Photography/Videography", price: 50000, perDay: true },
+            mc: { name: "MC Services", price: 30000, perDay: true },
+            security: { name: "Security", price: 20000, perDay: true },
+            permits: { name: "Permits", price: 15000, perDay: false },
+            tents: { name: "Tents & Chairs", price: 80000, perDay: false },
+            catering: { name: "Catering Services", price: 150000, perDay: false },
+            transport: { name: "Transport Logistics", price: 120000, perDay: false },
+            branding: { name: "Custom Branding", price: 45000, perDay: false }
+        };
+
+        // DOM elements
+        const provinceSelect = document.getElementById('province');
+        const venueSelect = document.getElementById('venue');
+        const generateQuoteBtn = document.getElementById('generateQuoteBtn');
+        const quotationSection = document.getElementById('quotationSection');
+        const quotationDetails = document.getElementById('quotationDetails');
+        const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+        const editQuoteBtn = document.getElementById('editQuoteBtn');
+        const confirmationSection = document.getElementById('confirmationSection');
+        const receiptPreview = document.getElementById('receiptPreview');
+        const printReceiptBtn = document.getElementById('printReceiptBtn');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const newBookingBtn = document.getElementById('newBookingBtn');
+        const clientForm = document.getElementById('clientForm');
+        const loading = document.getElementById('loading');
+
+        // Current booking data
+        let currentBooking = {};
+
+        // Event listeners
+        provinceSelect.addEventListener('change', updateVenues);
+        generateQuoteBtn.addEventListener('click', generateQuotation);
+        confirmBookingBtn.addEventListener('click', confirmBooking);
+        editQuoteBtn.addEventListener('click', editQuotation);
+        printReceiptBtn.addEventListener('click', printReceipt);
+        downloadPdfBtn.addEventListener('click', downloadPdf);
+        newBookingBtn.addEventListener('click', newBooking);
+
+        // Functions
+        function updateVenues() {
+            const province = provinceSelect.value;
+            venueSelect.innerHTML = '<option value="">-- Select Venue --</option>';
+            
+            if (province && provinceData[province]) {
+                provinceData[province].venues.forEach(venue => {
+                    const option = document.createElement('option');
+                    option.value = venue.name;
+                    option.textContent = `${venue.name} (Base: KES ${venue.basePrice.toLocaleString()})`;
+                    venueSelect.appendChild(option);
+                });
+            }
+        }
+
+        function generateReceiptQrCode() {
+            // Generate a unique receipt ID
+            const receiptId = 'JWRSEP-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            currentBooking.receiptId = receiptId;
+            
+            // Create a URL that would point to the online receipt
+            const receiptUrl = `https://jwrsep.co.ke/receipts/${receiptId}`;
+            
+            // Generate QR code
+            const qr = qrcode(0, 'L');
+            qr.addData(receiptUrl);
+            qr.make();
+            
+            // Add QR code to the receipt
+            const qrCodeElement = document.getElementById('receiptQrCode');
+            qrCodeElement.innerHTML = qr.createImgTag(4, 0);
+            
+            return receiptUrl;
+        }
+
+        function generateQuotation() {
+            if (!clientForm.checkValidity()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Get form values
+            const eventType = document.getElementById('eventType').value;
+            const province = provinceSelect.value;
+            const venue = venueSelect.value;
+            const duration = parseInt(document.getElementById('duration').value);
+            const eventDate = document.getElementById('eventDate').value;
+            const attendees = document.getElementById('attendees').value;
+            const specialRequests = document.getElementById('specialRequests').value;
+            
+            // Get selected additional services
+            const selectedServices = [];
+            document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedServices.push(checkbox.value);
+            });
+
+            // Get province data
+            const provinceInfo = provinceData[province];
+            const selectedVenue = provinceInfo.venues.find(v => v.name === venue);
+            const eventTypeInfo = eventTypeMultipliers[eventType];
+            const attendeeMultiplier = attendeeMultipliers[attendees];
+
+            // Calculate costs
+            let baseCost = selectedVenue.basePrice * eventTypeInfo.multiplier * attendeeMultiplier;
+            let additionalCost = 0;
+            const servicesDetails = [];
+
+            selectedServices.forEach(serviceId => {
+                const service = additionalServices[serviceId];
+                let serviceCost = service.price;
+                
+                if (service.perDay) {
+                    serviceCost *= duration;
+                }
+                
+                additionalCost += serviceCost;
+                servicesDetails.push({
+                    name: service.name,
+                    cost: serviceCost,
+                    perDay: service.perDay
+                });
+            });
+
+            const totalCost = baseCost + additionalCost;
+            const deposit = totalCost * 0.5;
+
+            // Store current booking
+            currentBooking = {
+                clientName: document.getElementById('clientName').value,
+                company: document.getElementById('company').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                eventType: eventTypeInfo.name,
+                province: provinceInfo.name,
+                venue: venue,
+                eventDate: eventDate,
+                duration: duration,
+                attendees: attendees,
+                baseCost: baseCost,
+                additionalCost: additionalCost,
+                totalCost: totalCost,
+                deposit: deposit,
+                services: servicesDetails,
+                specialRequests: specialRequests,
+                eventTypeMultiplier: eventTypeInfo.multiplier,
+                attendeeMultiplier: attendeeMultiplier
+            };
+
+            // Display quotation
+            let quotationHTML = `
+                <h3>Quotation for ${currentBooking.clientName}</h3>
+                <p><strong>Company:</strong> ${currentBooking.company || 'N/A'}</p>
+                <p><strong>Event Type:</strong> ${currentBooking.eventType}</p>
+                <p><strong>Event Date:</strong> ${new Date(currentBooking.eventDate).toLocaleDateString()}</p>
+                <p><strong>Location:</strong> ${currentBooking.venue}, ${currentBooking.province}</p>
+                <p><strong>Duration:</strong> ${currentBooking.duration} day(s)</p>
+                <p><strong>Expected Attendees:</strong> ${attendees.charAt(0).toUpperCase() + attendees.slice(1)} scale</p>
+                <p><em>Note: Pricing includes event type multiplier (${currentBooking.eventTypeMultiplier}x) 
+                and attendee scale multiplier (${currentBooking.attendeeMultiplier}x)</em></p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th>Amount (KES)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Venue Booking</td>
+                            <td>${currentBooking.venue} (${provinceInfo.staff} staff, ${provinceInfo.daysIncluded} days included)</td>
+                            <td>${currentBooking.baseCost.toLocaleString()}</td>
+                        </tr>
+            `;
+
+            currentBooking.services.forEach(service => {
+                quotationHTML += `
+                    <tr>
+                        <td>${service.name}</td>
+                        <td>${service.perDay ? `Daily service (${currentBooking.duration} days)` : 'One-time service'}</td>
+                        <td>${service.cost.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            quotationHTML += `
+                        <tr class="total-row">
+                            <td colspan="2">TOTAL</td>
+                            <td>${currentBooking.totalCost.toLocaleString()}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Deposit Required (50%)</td>
+                            <td>${currentBooking.deposit.toLocaleString()}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            if (currentBooking.specialRequests) {
+                quotationHTML += `
+                    <h4>Special Requests</h4>
+                    <p>${currentBooking.specialRequests}</p>
+                `;
+            }
+
+            quotationDetails.innerHTML = quotationHTML;
+            quotationSection.classList.remove('hidden');
+            clientForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function confirmBooking() {
+            loading.style.display = 'flex';
+            
+            try {
+                // Generate unique receipt URL and QR code
+                const receiptUrl = generateReceiptQrCode();
+                currentBooking.receiptUrl = receiptUrl;
+                
+                // Update receipt preview
+                document.getElementById('receiptClientName').textContent = currentBooking.clientName;
+                document.getElementById('receiptCompany').textContent = currentBooking.company || 'N/A';
+                document.getElementById('receiptEmail').textContent = currentBooking.email;
+                document.getElementById('receiptPhone').textContent = currentBooking.phone;
+                
+                document.getElementById('receiptEventDetails').innerHTML = `
+                    <p><strong>Event Type:</strong> ${currentBooking.eventType}</p>
+                    <p><strong>Event Date:</strong> ${new Date(currentBooking.eventDate).toLocaleDateString()}</p>
+                    <p><strong>Location:</strong> ${currentBooking.venue}, ${currentBooking.province}</p>
+                    <p><strong>Duration:</strong> ${currentBooking.duration} day(s)</p>
+                    <p><strong>Attendee Scale:</strong> ${currentBooking.attendees.charAt(0).toUpperCase() + currentBooking.attendees.slice(1)}</p>
+                `;
+                
+                const receiptItemsBody = document.getElementById('receiptItemsBody');
+                receiptItemsBody.innerHTML = '';
+                
+                // Add venue item
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Venue Booking</td>
+                    <td>${currentBooking.venue} (${currentBooking.eventType} event)</td>
+                    <td>${currentBooking.baseCost.toLocaleString()}</td>
+                `;
+                receiptItemsBody.appendChild(row);
+                
+                // Add services
+                currentBooking.services.forEach(service => {
+                    row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${service.name}</td>
+                        <td>${service.perDay ? `Daily service (${currentBooking.duration} days)` : 'One-time service'}</td>
+                        <td>${service.cost.toLocaleString()}</td>
+                    `;
+                    receiptItemsBody.appendChild(row);
+                });
+                
+                // Update totals
+                document.getElementById('receiptTotal').textContent = currentBooking.totalCost.toLocaleString();
+                document.getElementById('receiptDeposit').textContent = currentBooking.deposit.toLocaleString();
+                
+                // Generate PDF
+                const pdfBlob = await generatePdfBlob();
+                
+                // Send notifications
+                await Promise.all([
+                    sendEmailNotification(pdfBlob, receiptUrl),
+                    sendSMSNotification(receiptUrl)
+                ]);
+                
+                // Show confirmation with immediate print option
+                quotationSection.classList.add('hidden');
+                confirmationSection.classList.remove('hidden');
+                
+                // Create and show print modal
+                const printModal = document.createElement('div');
+                printModal.className = 'print-modal';
+                printModal.innerHTML = `
+                    <div class="print-modal-content">
+                        <h3 style="color:var(--primary); margin-bottom:20px;">Booking Confirmed!</h3>
+                        <p>We've sent the receipt to ${currentBooking.email}</p>
+                        <p>A confirmation SMS has been sent to ${currentBooking.phone}</p>
+                        <div class="print-modal-actions">
+                            <button onclick="printReceipt()">Print Receipt Now</button>
+                            <button onclick="this.parentElement.parentElement.parentElement.remove()">Close</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(printModal);
+                
+            } catch (error) {
+                console.error('Error during confirmation:', error);
+                alert('Confirmation failed. Please check console for details.');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function sendEmailNotification(pdfBlob, receiptUrl) {
+            try {
+                // In a real implementation, use EmailJS or similar service
+                console.log(`Sending email to: ${currentBooking.email}`);
+                console.log(`Email subject: BCS Gen Ai Procurement Quotation Booking Confirmation`);
+                console.log(`Email body: 
+                    Dear ${currentBooking.clientName},
+                    
+                    Thank you for booking with BCS Gen Ai Procurement Quotation!
+                    
+                    Event Details:
+                    - Type: ${currentBooking.eventType}
+                    - Date: ${new Date(currentBooking.eventDate).toLocaleDateString()}
+                    - Venue: ${currentBooking.venue}, ${currentBooking.province}
+                    - Total Cost: KES ${currentBooking.totalCost.toLocaleString()}
+                    
+                    View your receipt online: ${receiptUrl}
+                    
+                    We've attached a PDF copy of your receipt.
+                    
+                    Best regards,
+                    BCS Gen Ai Procurement Quotation Team
+                `);
+                
+                // Actual implementation would look like:
+                /*
+                const templateParams = {
+                    to_name: currentBooking.clientName,
+                    to_email: currentBooking.email,
+                    event_type: currentBooking.eventType,
+                    venue: currentBooking.venue,
+                    event_date: new Date(currentBooking.eventDate).toLocaleDateString(),
+                    total_cost: currentBooking.totalCost.toLocaleString(),
+                    receipt_url: receiptUrl,
+                    attachment: pdfBlob
+                };
+                
+                await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams);
+                */
+            } catch (error) {
+                console.error('Error sending email:', error);
+                // Fail silently - we don't want to block the user if email fails
+            }
+        }
+
+        async function sendSMSNotification(receiptUrl) {
+            try {
+                // In a real implementation, use Twilio API or African SMS gateway
+                console.log(`Sending SMS to: +254${currentBooking.phone.slice(-9)}`);
+                console.log(`Message: 
+                    Dear ${currentBooking.clientName}, your ${currentBooking.eventType} booking at ${currentBooking.venue} is confirmed! 
+                    Total: KES ${currentBooking.totalCost.toLocaleString()}. 
+                    View receipt: ${receiptUrl}
+                    Thank you for choosing BCS Gen Ai Procurement Quotation!
+                `);
+                
+                // Actual implementation would look like:
+                /*
+                const accountSid = 'YOUR_TWILIO_ACCOUNT_SID';
+                const authToken = 'YOUR_TWILIO_AUTH_TOKEN';
+                const client = require('twilio')(accountSid, authToken);
+                
+                await client.messages.create({
+                    body: `Dear ${currentBooking.clientName}, your booking is confirmed! View receipt: ${receiptUrl}`,
+                    from: 'YOUR_TWILIO_NUMBER',
+                    to: '+254' + currentBooking.phone.slice(-9)
+                });
+                */
+            } catch (error) {
+                console.error('Error sending SMS:', error);
+                // Fail silently - we don't want to block the user if SMS fails
+            }
+        }
+
+        async function generatePdfBlob() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add logo and company info
+            doc.setFontSize(20);
+            doc.setTextColor(0, 51, 102); // Dark Blue
+            doc.text('BCS Gen Ai Procurement Quotation', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text('P.O. Box 12345-00100, Nairobi', 105, 28, { align: 'center' });
+            doc.text('Phone: +254 700 000000 | Email: info@jwrsep.co.ke', 105, 34, { align: 'center' });
+            
+            // Add receipt title
+            doc.setFontSize(16);
+            doc.setTextColor(0, 102, 204); // Blue
+            doc.text('BCS Gen Ai Procurement Quotation', 105, 45, { align: 'center' });
+            
+            // Add client info
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Client Name: ${currentBooking.clientName}`, 20, 60);
+            doc.text(`Company: ${currentBooking.company || 'N/A'}`, 20, 67);
+            doc.text(`Email: ${currentBooking.email}`, 20, 74);
+            doc.text(`Phone: ${currentBooking.phone}`, 20, 81);
+            
+            // Add event details
+            doc.text(`Event Type: ${currentBooking.eventType}`, 20, 91);
+            doc.text(`Event Date: ${new Date(currentBooking.eventDate).toLocaleDateString()}`, 20, 98);
+            doc.text(`Location: ${currentBooking.venue}, ${currentBooking.province}`, 20, 105);
+            doc.text(`Duration: ${currentBooking.duration} day(s)`, 20, 112);
+            doc.text(`Attendee Scale: ${currentBooking.attendees.charAt(0).toUpperCase() + currentBooking.attendees.slice(1)}`, 20, 119);
+            
+            // Add items table
+            const tableData = [
+                ['Venue Booking', currentBooking.venue, currentBooking.baseCost.toLocaleString()],
+                ...currentBooking.services.map(service => [
+                    service.name, 
+                    service.perDay ? `Daily (${currentBooking.duration} days)` : 'One-time', 
+                    service.cost.toLocaleString()
+                ]),
+                ['TOTAL', '', currentBooking.totalCost.toLocaleString()],
+                ['Deposit Required (50%)', '', currentBooking.deposit.toLocaleString()]
+            ];
+            
+            doc.autoTable({
+                startY: 125,
+                head: [['Item', 'Description', 'Amount (KES)']],
+                body: tableData,
+                theme: 'grid',
+                headStyles: {
+                    fillColor: [0, 51, 102], // Dark Blue
+                    textColor: 255
+                },
+                columnStyles: {
+                    2: { halign: 'right' }
+                },
+                styles: {
+                    cellPadding: 5,
+                    fontSize: 10,
+                    valign: 'middle'
+                },
+                alternateRowStyles: {
+                    fillColor: [245, 245, 245]
+                }
+            });
+            
+            // Generate QR code for PDF
+            const qr = qrcode(0, 'L');
+            qr.addData(currentBooking.receiptUrl);
+            qr.make();
+            const qrSvg = qr.createSvgTag();
+            
+            // Convert SVG to canvas and add to PDF
+            const svgElement = document.createElement('div');
+            svgElement.innerHTML = qrSvg;
+            document.body.appendChild(svgElement);
+            
+            const canvas = await html2canvas(svgElement.firstChild);
+            document.body.removeChild(svgElement);
+            
+            const imgData = canvas.toDataURL('image/png');
+            doc.addImage(imgData, 'PNG', 80, doc.lastAutoTable.finalY + 30, 50, 50);
+            doc.text('Scan to verify your receipt online', 105, doc.lastAutoTable.finalY + 85, { align: 'center' });
+            
+            // Return as blob
+            return doc.output('blob');
+        }
+
+        function editQuotation() {
+            quotationSection.classList.add('hidden');
+        }
+
+        function printReceipt() {
+            window.print();
+        }
+
+        async function downloadPdf() {
+            const pdfBlob = await generatePdfBlob();
+            const url = URL.createObjectURL(pdfBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `JWRSEP_Receipt_${currentBooking.clientName.replace(' ', '_')}.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function newBooking() {
+            clientForm.reset();
+            confirmationSection.classList.add('hidden');
+            quotationSection.classList.add('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
